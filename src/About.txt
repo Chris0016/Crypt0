@@ -1,0 +1,10 @@
+A GUI program that implements different encryption algorithms
+
+algorithms to be implemented:
+	 Caesar Cipher,
+	 Vigenere Cipher, 
+	 Railfence Cipher, 
+	 Playfair Cipher, 
+	 Beaufort Cipher, 
+	 Autokey Cipher, 
+	 etc.
