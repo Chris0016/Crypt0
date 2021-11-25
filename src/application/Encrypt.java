@@ -10,10 +10,12 @@ public class Encrypt {
 	
 	}
 	
-	public String ceasarEncrypt(String plaintext, int key) {
+	public String ceasar(String plaintext, int key) {
 		int holder = 0;
 		encryptedText = "";
 		pTextLength = plaintext.length();
+		plaintext = plaintext.toUpperCase();
+
 		for (int i = 0; i < pTextLength; i++) {
 			char curr = plaintext.charAt(i);
 			if (curr == ' '){
@@ -28,44 +30,83 @@ public class Encrypt {
 		return encryptedText;
 	}
 	
-	public String vigenereEncrypt(String plaintext, String key) {
+	public String vigenere(String plaintext, String key) {
 		encryptedText = "";
+
 		pTextLength = plaintext.length();
 		kLength = key.length();
-		
-		int holder;
 
-		for (int i = 0; i < pTextLength; i++) {
-			//char1 =  (key.charAt(i%(kLength)) - 65);
-			//plain1 = (plaintext.charAt(i) - 65);
-			// Why 130; ascii starts the letters at 65 and we have two letters
-			holder = ((key.charAt(i%(kLength)  + plaintext.charAt(i))) - 130) % 26;		
-			encryptedText += ALPHABET.substring(holder , holder+1);				
+		plaintext = plaintext.toUpperCase();
+
+		int offset, pos;
+
+		for(int i = 0; i < pTextLength; i++){
+			offset = plaintext.charAt(i) - 65;
+			
+			pos =  (ALPHABET.indexOf(key.charAt( i % kLength )) + offset) % 26;
+
+			encryptedText += ALPHABET.charAt(pos);
+
 		}
 		return encryptedText;
 		
 	}
-	public String railFenceEncrypt(String plaintext){
-		String part1 = "";
-		String part2 = "";
+
+	public String railfence(String plaintext, int rails){
+		
+
+
+
+		if (rails < 2 || rails >=  plaintext.length())
+			throw new IllegalArgumentException("Invalid number of rails: Must be greater than 2 and less than the number of letters");
+
 		String curr = "";
 		
-		
+		int buckets = pTextLength;
+		String[][] holder = new String[rails + 1][buckets + 1];
 		encryptedText = "";
-		pTextLength = plaintext.length();		
+			
 		plaintext = plaintext.replaceAll("\\s+","");
+		pTextLength =	plaintext.length();
 
-		
+		int countY = 0;
+		int countX = 0;
+
+		boolean dir_isDown = false;
+
+		//FIX ME
 		for(int i = 0; i < pTextLength; i++){
 			curr = Character.toString(plaintext.charAt(i));
-			if (i % 2 != 0 || i == 1 )
-				part2 += curr;
-			else 
-				part1 += curr;
+			System.out.println("Count X: " + countX);
+			System.out.println("Count Y: " + countY );
+			System.out.println("i: " + i + "\n\n");
+
+			if(countX == 0 || countX == rails - 1){
+				countY++;
+				dir_isDown = !dir_isDown;
+			}
+
+			holder[countX][countY] = curr;
+
+			if  (dir_isDown) 
+				countX++; 
+			else
+				countX--;
+
+
+			
+
+		}
+	for(int y = 0; y < rails; y++){
+		for (int x = 0; x < buckets; x++){
+				curr = holder[y][x] ;
+				if (!(curr == null))
+					encryptedText += curr + "";
+			}
 		}
 
-		encryptedText = part1 + " " +  part2;
-		return encryptedText;
+		return encryptedText.toUpperCase();
+			
 	}
 	
 	public String beufort(String plaintext, String key){
@@ -92,11 +133,11 @@ public class Encrypt {
 		return encryptedText;
 	}
 	
-	public String encrypt(String plaintext, String key){
+	public String autokey(String plaintext, String key){
 		
 		encryptedText = "";
 		pTextLength = plaintext.length();
-		String runningKey = key +  plaintext;
+		String runningKey = key +  plaintext; //FIX ME
 		runningKey = runningKey.substring(0, pTextLength);
 
 		int offset, pos;
