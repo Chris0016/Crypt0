@@ -37,6 +37,7 @@ public class Encrypt {
 		kLength = key.length();
 
 		plaintext = plaintext.toUpperCase();
+		key = key.toUpperCase();
 
 		int offset, pos;
 
@@ -54,20 +55,19 @@ public class Encrypt {
 
 	public String railfence(String plaintext, int rails){
 		
-
-
-
-		if (rails < 2 || rails >=  plaintext.length())
-			throw new IllegalArgumentException("Invalid number of rails: Must be greater than 2 and less than the number of letters");
+		if (rails < 2 )
+			throw new IllegalArgumentException("Invalid number of rails: Must be greater than 2.");
+		
 
 		String curr = "";
 		
+		pTextLength =	plaintext.length();
 		int buckets = pTextLength;
 		String[][] holder = new String[rails + 1][buckets + 1];
 		encryptedText = "";
 			
-		plaintext = plaintext.replaceAll("\\s+","");
-		pTextLength =	plaintext.length();
+		plaintext = plaintext.replaceAll("\\s+","").toUpperCase();
+		
 
 		int countY = 0;
 		int countX = 0;
@@ -77,9 +77,9 @@ public class Encrypt {
 		//FIX ME
 		for(int i = 0; i < pTextLength; i++){
 			curr = Character.toString(plaintext.charAt(i));
-			System.out.println("Count X: " + countX);
-			System.out.println("Count Y: " + countY );
-			System.out.println("i: " + i + "\n\n");
+			//System.out.println("Count X: " + countX);
+			//System.out.println("Count Y: " + countY );
+			//System.out.println("i: " + i + "\n\n");
 
 			if(countX == 0 || countX == rails - 1){
 				countY++;
@@ -114,6 +114,7 @@ public class Encrypt {
 		pTextLength = plaintext.length();
 		kLength = key.length();
 		plaintext = plaintext.toUpperCase();
+		key = key.toUpperCase();
 		
 		int offset, pos;
 		int count = 0;
@@ -139,6 +140,8 @@ public class Encrypt {
 		pTextLength = plaintext.length();
 		String runningKey = key +  plaintext; //FIX ME
 		runningKey = runningKey.substring(0, pTextLength);
+		key = key.toUpperCase();
+		runningKey = runningKey.toUpperCase();
 
 		int offset, pos;
 
